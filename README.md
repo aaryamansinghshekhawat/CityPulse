@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CityPulse
+
+A modern city management and citizen engagement platform built with Next.js 15 and Tailwind CSS.
+
+## Features
+
+- **Citizen Portal**: Report issues, track progress, and stay informed
+- **Authority Dashboard**: Manage city operations and coordinate projects
+- **Real-time Updates**: Instant notifications and live tracking
+- **Responsive Design**: Mobile-first approach with modern UI/UX
+
+## Tech Stack
+
+- **Framework**: Next.js 15 with App Router
+- **Styling**: Tailwind CSS 4
+- **Language**: TypeScript
+- **Components**: Modular, reusable component architecture
+
+## Project Structure
+
+```
+src/
+├── app/                    # Next.js app directory
+│   ├── layout.tsx         # Root layout
+│   ├── page.tsx           # Homepage
+│   └── globals.css        # Global styles
+├── components/             # Reusable components
+│   ├── ui/                # Basic UI components
+│   │   ├── Button.tsx     # Button component
+│   │   ├── Card.tsx       # Card component
+│   │   └── index.ts       # UI exports
+│   ├── layout/            # Layout components
+│   │   ├── Navigation.tsx # Navigation bar
+│   │   ├── Footer.tsx     # Footer component
+│   │   └── index.ts       # Layout exports
+│   └── sections/          # Page sections
+│       ├── Hero.tsx       # Hero section
+│       ├── Features.tsx   # Features section
+│       ├── UserTypes.tsx  # User types section
+│       ├── CTA.tsx        # Call-to-action section
+│       └── index.ts       # Section exports
+└── lib/                   # Utility functions
+    └── utils.ts           # Common utilities
+```
 
 ## Getting Started
 
-First, run the development server:
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+2. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+3. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Component Usage
+
+### Button Component
+```tsx
+import { Button } from '@/components/ui';
+
+<Button variant="primary" size="lg" href="/signup">
+  Get Started
+</Button>
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Card Component
+```tsx
+import { Card } from '@/components/ui';
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+<Card className="p-8">
+  <h3>Title</h3>
+  <p>Content</p>
+</Card>
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Design System
 
-## Learn More
+- **Color Palette**: Professional grey theme (gray-50 to gray-900)
+- **Typography**: Geist font family for excellent readability
+- **Spacing**: Consistent spacing using Tailwind's spacing scale
+- **Components**: Modular design with consistent styling patterns
 
-To learn more about Next.js, take a look at the following resources:
+## Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### For Citizens
+- Report city issues and concerns
+- Track progress of reported issues
+- Receive real-time updates
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### For Authorities
+- Manage and respond to citizen reports
+- Coordinate city projects and initiatives
+- Access comprehensive analytics and reports
 
-## Deploy on Vercel
+## Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Follow the established component structure
+2. Use TypeScript for type safety
+3. Maintain consistent styling with Tailwind CSS
+4. Keep components simple and focused
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+This project is private and proprietary.

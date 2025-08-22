@@ -1,68 +1,17 @@
-import { initializeApp } from "firebase/app";
-import { getAnalytics, isSupported } from "firebase/analytics";
-import { getAuth } from "firebase/auth";
+// NOTE: Converted to TypeScript-compatible style. If using JS, keep as-is or rename to firebase.ts
+import { initializeApp, type FirebaseOptions } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyChBqpARqTCgqI_8rQNp3-hu_lbavrGBoE",
-  authDomain: "citypulse-9080d.firebaseapp.com",
-  projectId: "citypulse-9080d",
-  storageBucket: "citypulse-9080d.appspot.com",
-  messagingSenderId: "619395783157",
-  appId: "1:619395783157:web:4c9fbe8d24d75edbfd68bc",
-  measurementId: "G-QGCQBRJKK5"
+const firebaseConfig: FirebaseOptions = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase app
-let app;
-try {
-  app = initializeApp(firebaseConfig);
-  console.log('Firebase app initialized successfully');
-} catch (error) {
-  console.error('Failed to initialize Firebase app:', error);
-  throw error;
-}
+const app = initializeApp(firebaseConfig);
 
-// Initialize Auth
-let auth;
-try {
-  auth = getAuth(app);
-  console.log('Firebase auth initialized successfully');
-} catch (error) {
-  console.error('Failed to initialize Firebase auth:', error);
-  throw error;
-}
-
-// Initialize Analytics only on client side and if supported
-let analytics = null;
-if (typeof window !== 'undefined') {
-  isSupported()
-    .then(yes => {
-      if (yes) {
-        return getAnalytics(app);
-      }
-      return null;
-    })
-    .then(analyticsInstance => {
-      analytics = analyticsInstance;
-      if (analyticsInstance) {
-        console.log('Firebase analytics initialized successfully');
-      } else {
-        console.log('Firebase analytics not supported');
-      }
-    })
-    .catch((error) => {
-      console.warn('Firebase Analytics failed to initialize:', error);
-    });
-}
-
-// Test Firebase connection
-if (typeof window !== 'undefined') {
-  console.log('Firebase configuration:', {
-    projectId: firebaseConfig.projectId,
-    authDomain: firebaseConfig.authDomain,
-    appInitialized: !!app,
-    authInitialized: !!auth
-  });
-}
-
-export { auth, analytics, app };
+export const auth = getAuth(app);
+export { app };

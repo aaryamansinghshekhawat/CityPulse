@@ -29,23 +29,18 @@ export function useAuth() {
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const loading = false;
 
   const login = (email: string, password: string, type: 'citizen' | 'authority') => {
-    // Simulate login - just create a user object
     const user: User = {
       id: Date.now().toString(),
       email,
       type,
-      name: email.split('@')[0] // Use email prefix as name
+      name: email.split('@')[0]
     };
-    
     setCurrentUser(user);
     setUserLoggedIn(true);
-    
-    // Store in localStorage for persistence
     localStorage.setItem('citypulse_user', JSON.stringify(user));
-    
     console.log('User logged in:', user);
   };
 
@@ -56,12 +51,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     console.log('User logged out');
   };
 
-  // Check for existing user on mount
   useEffect(() => {
     const savedUser = localStorage.getItem('citypulse_user');
     if (savedUser) {
       try {
-        const user = JSON.parse(savedUser);
+        const user = JSON.parse(savedUser) as User;
         setCurrentUser(user);
         setUserLoggedIn(true);
         console.log('Restored user from storage:', user);

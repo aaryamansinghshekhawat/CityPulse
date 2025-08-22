@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '@/components/ui/Button';
+import { Button } from '@/components/ui/Button';
 
 const CTA: React.FC = () => {
   return (
@@ -20,7 +20,7 @@ const CTA: React.FC = () => {
             Login to Your Account
           </Button>
           <Button 
-            variant="outline" 
+            variant="secondary" 
             size="lg" 
             href="/signup"
           >

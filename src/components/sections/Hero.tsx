@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '@/components/ui/Button';
+import { Button } from '@/components/ui/Button';
 
 const Hero: React.FC = () => {
   return (
@@ -26,7 +26,7 @@ const Hero: React.FC = () => {
             Get Started as Citizen
           </Button>
           <Button 
-            variant="outline" 
+            variant="secondary" 
             size="lg" 
             href="/signup?type=authority"
           >

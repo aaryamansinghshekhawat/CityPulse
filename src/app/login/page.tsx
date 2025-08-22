@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { Navigation, Footer } from '@/components/layout';
 import { Button } from '@/components/ui';
 
+
 export default function LoginIndexPage({
   searchParams,
 }: {

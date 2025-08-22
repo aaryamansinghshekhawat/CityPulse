@@ -5,7 +5,7 @@ const Hero: React.FC = () => {
   return (
     <section 
       className="relative py-20 px-4 sm:px-6 lg:px-8 bg-cover bg-center" 
-      style={{ backgroundImage: "url('//a-us.storyblok.com/f/1005140/675x447/a02f6c36f7/bridge-construction.png')" }}
+      style={{ backgroundImage: "url('//media.wired.com/photos/59269cd37034dc5f91bec0f1/3:2/w_1920,c_limit/GoogleMapTA.png')" }}
     >
       <div className="absolute inset-0 bg-black/40"></div> {/* Dark overlay for readability */}
 

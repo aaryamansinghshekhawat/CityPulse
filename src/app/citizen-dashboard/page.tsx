@@ -12,6 +12,13 @@ const CitizenDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [myReports, setMyReports] = useState<ReportOrComplaint[]>([]);
   const [alerts, setAlerts] = useState(getAllAlerts());
+  const [form, setForm] = useState({
+    kind: 'Report' as 'Report' | 'Complaint',
+    title: '',
+    description: '',
+    location: ''
+  });
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (!userLoggedIn || currentUser?.type !== 'citizen') {
@@ -22,12 +29,10 @@ const CitizenDashboard = () => {
   useEffect(() => {
     if (!currentUser) return;
     setMyReports(getReportsByUser(currentUser.id));
-    const off = onStoreUpdate((key) => {
+    const off = onStoreUpdate(() => {
       if (!currentUser) return;
-      if (key) {
-        setMyReports(getReportsByUser(currentUser.id));
-        setAlerts(getAllAlerts());
-      }
+      setMyReports(getReportsByUser(currentUser.id));
+      setAlerts(getAllAlerts());
     });
     return off;
   }, [currentUser]);
@@ -40,14 +45,6 @@ const CitizenDashboard = () => {
   if (!userLoggedIn || currentUser?.type !== 'citizen') {
     return null;
   }
-
-  const [form, setForm] = useState({
-    kind: 'Report' as 'Report' | 'Complaint',
-    title: '',
-    description: '',
-    location: ''
-  });
-  const [submitting, setSubmitting] = useState(false);
 
   const submitIssue = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -317,7 +314,7 @@ const CitizenDashboard = () => {
                 <p className="text-lg text-gray-600 mb-2">Project listings coming soon</p>
                 <p className="text-sm text-gray-500">Stay tuned for updates on city development projects</p>
                 <div className="mt-6 p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl border border-yellow-200">
-                  <p className="text-sm text-yellow-800">💡 Tip: Check the Alerts & Notices tab for project announcements!</p>
+                  <p className="text-sm text-yellow-800">💡 Tip: Check the Alerts &amp; Notices tab for project announcements!</p>
                 </div>
               </div>
             </div>
@@ -330,14 +327,14 @@ const CitizenDashboard = () => {
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
                 <span className="mr-3">🔔</span>
-                City Alerts & Notices
+                City Alerts &amp; Notices
               </h3>
               
               {alerts.length === 0 ? (
                 <div className="text-center py-12">
                   <div className="text-6xl mb-4">📭</div>
                   <p className="text-lg text-gray-600 mb-2">No alerts at the moment</p>
-                  <p className="text-sm text-gray-500">You're all caught up! Check back later for updates</p>
+                  <p className="text-sm text-gray-500">You&apos;re all caught up! Check back later for updates</p>
                 </div>
               ) : (
                 <div className="space-y-4">

@@ -39,7 +39,8 @@ function writeJson<T>(key: string, value: T): void {
   localStorage.setItem(key, JSON.stringify(value));
   try {
     // Notify other listeners (storage event doesn't fire in same tab)
-    window.dispatchEvent(new CustomEvent('citypulse:store:update', { detail: { key } }));
+    const event: CustomEvent<{ key: string }> = new CustomEvent('citypulse:store:update', { detail: { key } });
+    window.dispatchEvent(event);
   } catch {}
 }
 
@@ -91,11 +92,12 @@ export function addAlert(input: Omit<AlertOrNotice, 'id' | 'createdAt' | 'audien
 }
 
 export function onStoreUpdate(callback: (key: string) => void): () => void {
-  const handler = (e: any) => {
-    if (e?.detail?.key) callback(e.detail.key);
+  const handler = (e: Event) => {
+    const ce = e as CustomEvent<{ key: string }>;
+    if (ce?.detail?.key) callback(ce.detail.key);
   };
   const storageHandler = (e: StorageEvent) => {
-    if (e.key === REPORTS_KEY || e.key === ALERTS_KEY) callback(e.key);
+    if (e.key === REPORTS_KEY || e.key === ALERTS_KEY) callback(e.key ?? '');
   };
   if (typeof window !== 'undefined') {
     window.addEventListener('citypulse:store:update', handler as EventListener);

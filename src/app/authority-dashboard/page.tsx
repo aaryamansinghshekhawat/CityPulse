@@ -4,13 +4,15 @@ import { Navigation, Footer } from '@/components/layout';
 import { Button } from '@/components/ui';
 import { useAuth } from '@/contexts/authContext';
 import { useRouter } from 'next/navigation';
-import { getAllReports, updateReportStatus, addAlert, getAllAlerts, onStoreUpdate, ReportOrComplaint } from '@/lib/store';
+import { getAllReports, updateReportStatus, addAlert, getAllAlerts, onStoreUpdate, ReportOrComplaint, ReportStatus } from '@/lib/store';
 
 const AuthorityDashboard = () => {
   const { currentUser, userLoggedIn, logout } = useAuth();
   const router = useRouter();
   const [reports, setReports] = useState<ReportOrComplaint[]>([]);
   const [alerts, setAlerts] = useState(getAllAlerts());
+  const [newAlert, setNewAlert] = useState({ title: '', message: '' });
+  const [creatingAlert, setCreatingAlert] = useState(false);
 
   useEffect(() => {
     if (!userLoggedIn || currentUser?.type !== 'authority') {
@@ -20,7 +22,7 @@ const AuthorityDashboard = () => {
 
   useEffect(() => {
     setReports(getAllReports());
-    const off = onStoreUpdate((key) => {
+    const off = onStoreUpdate(() => {
       setReports(getAllReports());
       setAlerts(getAllAlerts());
     });
@@ -35,9 +37,6 @@ const AuthorityDashboard = () => {
   if (!userLoggedIn || currentUser?.type !== 'authority') {
     return null;
   }
-
-  const [newAlert, setNewAlert] = useState({ title: '', message: '' });
-  const [creatingAlert, setCreatingAlert] = useState(false);
 
   const createAlert = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -56,7 +55,7 @@ const AuthorityDashboard = () => {
     }
   };
 
-  const setStatus = (id: string, status: 'Pending' | 'In Progress' | 'Resolved') => {
+  const setStatus = (id: string, status: ReportStatus) => {
     updateReportStatus(id, status);
   };
 
@@ -146,7 +145,7 @@ const AuthorityDashboard = () => {
                           </span>
                           <select
                             value={r.status}
-                            onChange={(e) => setStatus(r.id, e.target.value as any)}
+                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setStatus(r.id, e.target.value as ReportStatus)}
                             className="border-2 border-gray-200 rounded-lg px-3 py-1 text-xs focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all duration-300"
                           >
                             <option>Pending</option>

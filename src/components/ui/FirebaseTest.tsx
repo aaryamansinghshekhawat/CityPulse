@@ -9,30 +9,30 @@ const FirebaseTest: React.FC = () => {
   useEffect(() => {
     const testFirebase = async () => {
       try {
-        // Test if Firebase auth is available
         if (!auth) {
           throw new Error('Firebase auth is not initialized');
         }
 
-        // Test if we can access auth methods
         const currentUser = auth.currentUser;
         console.log('Current user:', currentUser);
         
-        // Test if auth state listener works
-        const unsubscribe = auth.onAuthStateChanged((user) => {
-          console.log('Auth state changed in test:', user);
-          setStatus('Firebase is working correctly!');
-        });
+        if (typeof auth.onAuthStateChanged === 'function') {
+          const unsubscribe = auth.onAuthStateChanged((user) => {
+            console.log('Auth state changed in test:', user);
+            setStatus('Firebase is working correctly!');
+          });
+          setTimeout(() => {
+            unsubscribe();
+            setStatus('Firebase test completed successfully');
+          }, 1000);
+        } else {
+          setStatus('Auth object is available');
+        }
 
-        // Cleanup
-        setTimeout(() => {
-          unsubscribe();
-          setStatus('Firebase test completed successfully');
-        }, 1000);
-
-      } catch (err: any) {
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : 'Unknown error';
         console.error('Firebase test failed:', err);
-        setError(err.message);
+        setError(message);
         setStatus('Firebase test failed');
       }
     };

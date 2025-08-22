@@ -27,11 +27,10 @@ const AuthorityLogin = () => {
       setErrorMessage('');
       
       try {
-        // Simple login - just call the auth context login function
         login(email, password, 'authority');
         console.log('Authority login successful, redirecting to dashboard');
         router.push('/authority-dashboard');
-      } catch (error: any) {
+      } catch (error) {
         console.error('Authority login error:', error);
         setErrorMessage('Failed to sign in');
       } finally {
@@ -51,12 +50,11 @@ const AuthorityLogin = () => {
       setErrorMessage('');
       
       try {
-        // Simulate Google sign in
         const mockEmail = `authority${Date.now()}@example.gov`;
         login(mockEmail, 'google123', 'authority');
         console.log('Authority Google sign in successful, redirecting to dashboard');
         router.push('/authority-dashboard');
-      } catch (error: any) {
+      } catch (error) {
         console.error('Authority Google sign in error:', error);
         setErrorMessage('Failed to sign in with Google');
         setIsSigningIn(false);

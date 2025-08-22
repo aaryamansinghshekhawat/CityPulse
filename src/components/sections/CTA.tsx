@@ -23,7 +23,6 @@ const CTA: React.FC = () => {
             variant="outline" 
             size="lg" 
             href="/signup"
-            className="border-white text-white hover:bg-white hover:text-gray-800"
           >
             Create New Account
           </Button>

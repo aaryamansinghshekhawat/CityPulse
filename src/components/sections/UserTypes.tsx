@@ -55,7 +55,7 @@ const UserTypes: React.FC = () => {
             Choose Your Role
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Whether you're a citizen wanting to contribute or an authority managing city operations, 
+            Whether you are a citizen wanting to contribute or an authority managing city operations, 
             we have the right tools for you.
           </p>
         </div>

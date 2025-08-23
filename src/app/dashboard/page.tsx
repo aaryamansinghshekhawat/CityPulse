@@ -2,8 +2,8 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import Script from "next/script";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/firebase/firebase";
+import { useAuth } from "@/contexts/authContext";
+import { useRouter } from "next/navigation";
 
 type ConstructionItem = {
 	id: string;
@@ -31,8 +31,8 @@ interface MapplsMap {
 }
 
 const Dashboard: React.FC = () => {
-	const [loadingAuth, setLoadingAuth] = useState<boolean>(true);
-	const [isAuthed, setIsAuthed] = useState<boolean>(false);
+	const { userLoggedIn, currentUser } = useAuth();
+	const router = useRouter();
 	const [mapLoaded, setMapLoaded] = useState<boolean>(false);
 	const [map, setMap] = useState<MapplsMap | null>(null);
 	const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -61,12 +61,11 @@ const Dashboard: React.FC = () => {
 	);
 
 	useEffect(() => {
-		const unsub = onAuthStateChanged(auth, (u) => {
-			setIsAuthed(Boolean(u));
-			setLoadingAuth(false);
-		});
-		return () => unsub();
-	}, []);
+		// Redirect citizens to their specific dashboard
+		if (userLoggedIn && currentUser?.type === 'citizen') {
+			router.push('/citizen-dashboard');
+		}
+	}, [userLoggedIn, currentUser, router]);
 
 	useEffect(() => {
 		const loadToken = async () => {
@@ -117,21 +116,15 @@ const Dashboard: React.FC = () => {
 		});
 	}, [map, mockConstructions]);
 
-	if (loadingAuth) {
-		return (
-			<div className="min-h-screen flex items-center justify-center">
-				<p>Loading...</p>
-			</div>
-		);
-	}
-
-	if (!isAuthed) {
+	if (!userLoggedIn) {
 		return (
 			<div className="min-h-screen flex items-center justify-center">
 				<p>Please log in to view the dashboard.</p>
 			</div>
 		);
 	}
+
+
 
 	return (
 		<div className="min-h-screen">

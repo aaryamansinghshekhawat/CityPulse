@@ -83,7 +83,8 @@ export default function MapView() {
       // Fix Leaflet default icon issue
       if (typeof window !== 'undefined') {
         import('leaflet').then((L) => {
-          delete L.default.Icon.Default.prototype._getIconUrl;
+          // Use type assertion to bypass TypeScript error for _getIconUrl
+          delete (L.default.Icon.Default.prototype as any)._getIconUrl;
           L.default.Icon.Default.mergeOptions({
             iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
             iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',

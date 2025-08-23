@@ -1,8 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
+import { useAuth } from '@/contexts/authContext';
 
 const Navigation: React.FC = () => {
+  const { userLoggedIn, currentUser, logout } = useAuth();
+  
   return (
     <nav className="bg-white/95 backdrop-blur-sm shadow-lg border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -20,12 +23,25 @@ const Navigation: React.FC = () => {
             </div>
           </div>
           <div className="flex space-x-3">
-            <Button variant="ghost" size="sm" href="/login" className="hover:bg-gray-100">
-              Login
-            </Button>
-            <Button variant="primary" size="sm" href="/signup" className="shadow-md hover:shadow-lg">
-              Sign Up
-            </Button>
+            {!userLoggedIn ? (
+              <>
+                <Button variant="ghost" size="sm" href="/login" className="hover:bg-gray-100">
+                  Login
+                </Button>
+                <Button variant="primary" size="sm" href="/signup" className="shadow-md hover:shadow-lg">
+                  Sign Up
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="ghost" size="sm" href={currentUser?.type === 'citizen' ? '/citizen-dashboard' : '/authority-dashboard'} className="hover:bg-gray-100">
+                  Dashboard
+                </Button>
+                <Button variant="outline" size="sm" onClick={logout} className="hover:bg-gray-100">
+                  Logout
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>

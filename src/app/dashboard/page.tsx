@@ -143,7 +143,7 @@ const Dashboard: React.FC = () => {
 					<label className="text-sm">View:</label>
 					<select
 						value={viewMode}
-						onChange={(e) => setViewMode(e.target.value as any)}
+						onChange={(e) => setViewMode(e.target.value as "latest" | "historical")}
 						className="border rounded px-2 py-1"
 					>
 						<option value="latest">Latest traffic</option>

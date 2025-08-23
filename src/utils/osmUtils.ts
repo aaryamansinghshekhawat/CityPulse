@@ -27,6 +27,21 @@ export interface OSMData {
   elements: Array<OSMNode | OSMWay | OSMRelation>;
 }
 
+// Simple GeoJSON type definitions to avoid external dependencies
+interface GeoJSONFeature {
+  type: 'Feature';
+  geometry: {
+    type: 'Point' | 'LineString' | 'Polygon';
+    coordinates: number[] | number[][] | number[][][];
+  };
+  properties: Record<string, string | number | boolean | undefined>;
+}
+
+interface GeoJSONFeatureCollection {
+  type: 'FeatureCollection';
+  features: GeoJSONFeature[];
+}
+
 // Common Overpass queries for city data
 export const OVERPASS_QUERIES = {
   // Get all roads in a bounding box
@@ -149,8 +164,8 @@ export async function getRoadClosuresInArea(
 }
 
 // Helper function to convert OSM data to GeoJSON format
-export function osmToGeoJSON(osmData: OSMData): any {
-  const features: any[] = [];
+export function osmToGeoJSON(osmData: OSMData): GeoJSONFeatureCollection {
+  const features: GeoJSONFeature[] = [];
 
   osmData.elements.forEach((element) => {
     if ('lat' in element && 'lon' in element) {

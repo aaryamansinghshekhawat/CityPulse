@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Script from "next/script";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/config/firebase";
+import { auth } from "@/firebase/firebase";
 
 type ConstructionItem = {
 	id: string;

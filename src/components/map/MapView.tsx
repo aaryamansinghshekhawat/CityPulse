@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { getOSMTileConfig } from "@/utils/osmUtils";
 
@@ -41,8 +41,15 @@ interface LocationInfo {
   address?: string;
 }
 
+interface OSMConfig {
+  tile_url: string;
+  attribution: string;
+  maxZoom: number;
+  subdomains?: string[];
+}
+
 export default function MapView() {
-  const [osmConfig, setOsmConfig] = useState<any>(null);
+  const [osmConfig, setOsmConfig] = useState<OSMConfig | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [userLocation, setUserLocation] = useState<Location | null>(null);
@@ -75,12 +82,13 @@ export default function MapView() {
     const timer = setTimeout(() => {
       // Fix Leaflet default icon issue
       if (typeof window !== 'undefined') {
-        const L = require('leaflet');
-        delete L.Icon.Default.prototype._getIconUrl;
-        L.Icon.Default.mergeOptions({
-          iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-          iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+        import('leaflet').then((L) => {
+          delete L.default.Icon.Default.prototype._getIconUrl;
+          L.default.Icon.Default.mergeOptions({
+            iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+            iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+          });
         });
       }
       setMapReady(true);
@@ -135,9 +143,9 @@ export default function MapView() {
     } catch (err) {
       console.error('Error getting location:', err);
       console.error('Error type:', typeof err);
-      console.error('Error constructor:', (err as any)?.constructor?.name);
-      console.error('Error message:', (err as any)?.message);
-      console.error('Error code:', (err as any)?.code);
+      console.error('Error constructor:', (err as Error)?.constructor?.name);
+      console.error('Error message:', (err as Error)?.message);
+      console.error('Error code:', (err as GeolocationPositionError)?.code);
       
       if (err instanceof GeolocationPositionError) {
         console.log('Handling GeolocationPositionError...');
@@ -156,8 +164,8 @@ export default function MapView() {
         }
       } else if (err && typeof err === 'object' && 'code' in err) {
         // Handle other geolocation-like errors
-        const errorCode = (err as any).code;
-        const errorMessage = (err as any).message || 'Unknown geolocation error';
+        const errorCode = (err as GeolocationPositionError).code;
+        const errorMessage = (err as GeolocationPositionError).message || 'Unknown geolocation error';
         
         switch (errorCode) {
           case 1:
@@ -259,7 +267,7 @@ export default function MapView() {
             <div className="bg-blue-50 p-2 rounded border border-blue-200 mb-2">
               <p className="text-xs text-blue-800">
                 💡 <strong>Tip:</strong> Make sure location permissions are enabled in your browser settings. 
-                If you're using HTTPS, location access should work automatically.
+                If you&apos;re using HTTPS, location access should work automatically.
               </p>
             </div>
             <button

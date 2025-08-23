@@ -16,7 +16,10 @@ type ConstructionItem = {
 
 declare global {
 	interface Window {
-		mappls: any;
+		mappls: {
+			Map: new (container: string, options: Record<string, unknown>) => unknown;
+			Marker: (options: Record<string, unknown>) => unknown;
+		};
 	}
 }
 
@@ -24,7 +27,7 @@ const Dashboard: React.FC = () => {
 	const [loadingAuth, setLoadingAuth] = useState<boolean>(true);
 	const [isAuthed, setIsAuthed] = useState<boolean>(false);
 	const [mapLoaded, setMapLoaded] = useState<boolean>(false);
-	const [map, setMap] = useState<any>(null);
+	const [map, setMap] = useState<unknown>(null);
 	const [accessToken, setAccessToken] = useState<string | null>(null);
 	const [viewMode, setViewMode] = useState<"latest" | "historical">("latest");
 
@@ -100,7 +103,7 @@ const Dashboard: React.FC = () => {
 				window.mappls.Marker({
 					map,
 					position: { lat: c.lat, lng: c.lng },
-					popupHtml: `<div><strong>${c.name}</strong><br/>Status: ${c.status}<br/>${c.description ?? ""}</div>`,
+					popupHtml: `<div><strong>${c.name}</strong><br/>Status: ${c.status}<br/>${c.description || ""}</div>`,
 					icon: c.status === "ongoing" ? "https://maps.mappls.com/images/2.png" : undefined,
 				});
 			} catch {}

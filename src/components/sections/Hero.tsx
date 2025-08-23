@@ -15,7 +15,7 @@ const Hero: React.FC = () => {
         </h1>
         <p className="text-xl mb-8 max-w-3xl mx-auto">
           Your collaborative platform for building better cities through citizen ideas, community engagement, and smart city development. 
-          Let's create amazing cities together!
+          Let&apos;s create amazing cities together!
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button 

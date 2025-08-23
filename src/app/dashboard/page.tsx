@@ -17,17 +17,24 @@ type ConstructionItem = {
 declare global {
 	interface Window {
 		mappls: {
-			Map: new (container: string, options: Record<string, unknown>) => unknown;
+			Map: new (container: string, options: Record<string, unknown>) => MapplsMap;
 			Marker: (options: Record<string, unknown>) => unknown;
 		};
 	}
+}
+
+interface MapplsMap {
+	addTraffic(): void;
+	removeTraffic(): void;
+	setCenter(position: { lat: number; lng: number }): void;
+	setZoom(zoom: number): void;
 }
 
 const Dashboard: React.FC = () => {
 	const [loadingAuth, setLoadingAuth] = useState<boolean>(true);
 	const [isAuthed, setIsAuthed] = useState<boolean>(false);
 	const [mapLoaded, setMapLoaded] = useState<boolean>(false);
-	const [map, setMap] = useState<unknown>(null);
+	const [map, setMap] = useState<MapplsMap | null>(null);
 	const [accessToken, setAccessToken] = useState<string | null>(null);
 	const [viewMode, setViewMode] = useState<"latest" | "historical">("latest");
 
@@ -79,7 +86,7 @@ const Dashboard: React.FC = () => {
 			zoom: 11,
 			traffic: true,
 			zoomControl: true,
-		});
+		}) as MapplsMap;
 		setMap(mapObj);
 	}, [mapLoaded, accessToken]);
 

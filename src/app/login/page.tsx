@@ -1,7 +1,6 @@
 "use client";
 
 import React from 'react';
-import Link from 'next/link';
 import { Navigation, Footer } from '@/components/layout';
 import { Button } from '@/components/ui';
 
@@ -88,7 +87,7 @@ const LoginSelectionPage = () => {
         </div>
 
         <div className="text-center mt-8">
-          <p className="text-gray-600 mb-4">Don't have an account?</p>
+          <p className="text-gray-600 mb-4">Don&apos;t have an account?</p>
           <div className="flex justify-center space-x-4">
             <Button variant="outline" size="md" href="/signup?type=user">
               Sign up as Citizen

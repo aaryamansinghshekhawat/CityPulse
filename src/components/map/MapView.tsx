@@ -84,7 +84,7 @@ export default function MapView() {
       if (typeof window !== 'undefined') {
         import('leaflet').then((L) => {
           // Fix Leaflet default icon issue with proper typing
-          const iconPrototype = L.default.Icon.Default.prototype as Record<string, unknown>;
+          const iconPrototype = L.default.Icon.Default.prototype as unknown as { [key: string]: unknown };
           if ('_getIconUrl' in iconPrototype) {
             delete iconPrototype._getIconUrl;
           }

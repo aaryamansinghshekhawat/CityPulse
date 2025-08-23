@@ -27,11 +27,10 @@ const Login = () => {
       setErrorMessage('');
       
       try {
-        // Simple login - just call the auth context login function
         login(email, password, 'citizen');
         console.log('Citizen login successful, redirecting to dashboard');
         router.push('/citizen-dashboard');
-      } catch (error: any) {
+      } catch (error) {
         console.error('Citizen login error:', error);
         setErrorMessage('Failed to sign in');
       } finally {
@@ -51,12 +50,11 @@ const Login = () => {
       setErrorMessage('');
       
       try {
-        // Simulate Google sign in
         const mockEmail = `citizen${Date.now()}@example.com`;
         login(mockEmail, 'google123', 'citizen');
         console.log('Citizen Google sign in successful, redirecting to dashboard');
         router.push('/citizen-dashboard');
-      } catch (error: any) {
+      } catch (error) {
         console.error('Citizen Google sign in error:', error);
         setErrorMessage('Failed to sign in with Google');
         setIsSigningIn(false);

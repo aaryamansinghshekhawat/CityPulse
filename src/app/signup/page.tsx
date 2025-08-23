@@ -3,12 +3,13 @@ import { redirect } from 'next/navigation';
 import { Navigation, Footer } from '@/components/layout';
 import { Button } from '@/components/ui';
 
-export default function SignupIndexPage({
+export default async function SignupIndexPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const type = (Array.isArray(searchParams?.type) ? searchParams?.type[0] : searchParams?.type) as
+  const sp = await searchParams;
+  const type = (Array.isArray(sp?.type) ? sp?.type[0] : sp?.type) as
     | 'user'
     | 'authority'
     | undefined;

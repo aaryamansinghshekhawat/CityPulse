@@ -48,7 +48,7 @@ export default function UserSignupPage() {
       className="min-h-screen bg-cover bg-center"
       style={{
         backgroundImage:
-          "url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.idownloadblog.com%2F2022%2F07%2F27%2Fgoogle-maps-location-sharing-aerial-views-cycling-route-improvements%2F&psig=AOvVaw3MDjZpWVemYVBpYrKV6QXr&ust=1755941984941000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCODNq82Qno8DFQAAAAAdAAAAABAL.jpg')",
+          "url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.govtech.com%2Fsmart-cities%2Fces-2020-smart-city-solutions-to-aging-infrastructure.html&psig=AOvVaw0YNCgOKVANZGEz2XMwbWZQ&ust=1756001104349000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCNjL8IHsn48DFQAAAAAdAAAAABAL.jpg')",
       }}
     >
       <div className="bg-white/70 min-h-screen">

@@ -24,7 +24,6 @@ export default function AuthoritySignupPage() {
 
     setIsSubmitting(true);
     try {
-      // Simple signup - just call the auth context login function
       login(formData.email, formData.password, 'authority');
       console.log('Authority signup successful, redirecting to dashboard');
       router.push('/authority-dashboard');
@@ -49,6 +48,8 @@ export default function AuthoritySignupPage() {
       <main className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <h1 className="text-3xl font-bold text-gray-900 mb-6">Authority Sign Up</h1>
         <form onSubmit={handleSubmit} className="bg-white border border-gray-200 rounded-lg p-6 space-y-4">
+          
+          {/* Department */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Department Name</label>
             <input 
@@ -56,11 +57,15 @@ export default function AuthoritySignupPage() {
               name="department"
               value={formData.department}
               onChange={handleInputChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400" 
+              className="w-full border border-gray-300 rounded-md px-3 py-2 
+                         focus:outline-none focus:ring-2 focus:ring-gray-400 
+                         text-black placeholder-gray-400" 
               placeholder="Department" 
               required
             />
           </div>
+
+          {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Official Email</label>
             <input 
@@ -68,11 +73,15 @@ export default function AuthoritySignupPage() {
               name="email"
               value={formData.email}
               onChange={handleInputChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400" 
+              className="w-full border border-gray-300 rounded-md px-3 py-2 
+                         focus:outline-none focus:ring-2 focus:ring-gray-400 
+                         text-black placeholder-gray-400" 
               placeholder="official@example.gov" 
               required
             />
           </div>
+
+          {/* Password */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
             <input 
@@ -80,15 +89,19 @@ export default function AuthoritySignupPage() {
               name="password"
               value={formData.password}
               onChange={handleInputChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400" 
+              className="w-full border border-gray-300 rounded-md px-3 py-2 
+                         focus:outline-none focus:ring-2 focus:ring-gray-400 
+                         text-black placeholder-gray-400" 
               placeholder="••••••••" 
               required
             />
           </div>
+
           <Button variant="primary" size="md" className="w-full" type="submit" disabled={isSubmitting}>
             {isSubmitting ? 'Creating Account...' : 'Create Account'}
           </Button>
         </form>
+
         <p className="text-sm text-gray-600 mt-4">
           Already have an account? <a href="/login?type=authority" className="text-gray-800 underline">Login</a>
         </p>
@@ -97,3 +110,5 @@ export default function AuthoritySignupPage() {
     </div>
   );
 }
+
+

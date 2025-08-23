@@ -1,11 +1,11 @@
 # CityPulse
 
-A modern city management and citizen engagement platform built with Next.js 15 and Tailwind CSS.
+A modern city collaboration and citizen engagement platform built with Next.js 15 and Tailwind CSS.
 
 ## Features
 
-- **Citizen Portal**: Report issues, track progress, and stay informed
-- **Authority Dashboard**: Manage city operations and coordinate projects
+- **Citizen Portal**: Share ideas, track progress, and stay connected
+- **Authority Dashboard**: Review suggestions and coordinate improvements
 - **Real-time Updates**: Instant notifications and live tracking
 - **Responsive Design**: Mobile-first approach with modern UI/UX
 
@@ -88,14 +88,14 @@ import { Card } from '@/components/ui';
 ## Features
 
 ### For Citizens
-- Report city issues and concerns
-- Track progress of reported issues
-- Receive real-time updates
+- Share suggestions and innovative ideas
+- Track progress of community initiatives
+- Receive exciting city updates and news
 
 ### For Authorities
-- Manage and respond to citizen reports
-- Coordinate city projects and initiatives
-- Access comprehensive analytics and reports
+- Review and implement citizen suggestions
+- Coordinate city improvement projects
+- Share progress updates and achievements
 
 ## Contributing
 

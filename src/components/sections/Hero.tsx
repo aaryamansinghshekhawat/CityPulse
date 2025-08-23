@@ -14,8 +14,8 @@ const Hero: React.FC = () => {
           Welcome to <span className="text-gray-200">CityPulse</span>
         </h1>
         <p className="text-xl mb-8 max-w-3xl mx-auto">
-          Your comprehensive platform for city management, citizen engagement, and official authority coordination. 
-          Connect, collaborate, and build better cities together.
+          Your collaborative platform for building better cities through citizen ideas, community engagement, and smart city development. 
+          Let's create amazing cities together!
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button 
@@ -23,14 +23,14 @@ const Hero: React.FC = () => {
             size="lg" 
             href="/signup?type=user"
           >
-            Get Started as Citizen
+            Share Your Ideas
           </Button>
           <Button 
             variant="secondary" 
             size="lg" 
             href="/signup?type=authority"
           >
-            Join as Authority
+            Join City Team
           </Button>
         </div>
       </div>

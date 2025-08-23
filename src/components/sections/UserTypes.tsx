@@ -19,11 +19,11 @@ const userTypes: UserType[] = [
       </svg>
     ),
     title: 'Citizens',
-    description: 'Report issues, track city projects, and stay informed',
+    description: 'Share ideas, contribute to city projects, and stay connected',
     features: [
-      'Report city issues and concerns',
-      'Track progress of reported issues',
-      'Receive real-time updates'
+      'Share suggestions and innovative ideas',
+      'Track progress of community initiatives',
+      'Receive exciting city updates and news'
     ],
     buttonText: 'Join as Citizen',
     buttonHref: '/signup?type=user'
@@ -34,12 +34,12 @@ const userTypes: UserType[] = [
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
       </svg>
     ),
-    title: 'Official Authorities',
-    description: 'Manage city operations, respond to issues, and coordinate projects',
+    title: 'City Authorities',
+    description: 'Review citizen ideas, coordinate improvements, and share progress',
     features: [
-      'Manage and respond to citizen reports',
-      'Coordinate city projects and initiatives',
-      'Access comprehensive analytics and reports'
+      'Review and implement citizen suggestions',
+      'Coordinate city improvement projects',
+      'Share progress updates and achievements'
     ],
     buttonText: 'Join as Authority',
     buttonHref: '/signup?type=authority'
@@ -55,8 +55,8 @@ const UserTypes: React.FC = () => {
             Choose Your Role
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Whether you are a citizen wanting to contribute or an authority managing city operations, 
-            we have the right tools for you.
+            Whether you are a citizen wanting to contribute ideas or an authority building a better city, 
+            we have the perfect tools for collaboration.
           </p>
         </div>
 

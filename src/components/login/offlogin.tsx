@@ -18,6 +18,14 @@ const AuthorityLogin = () => {
     console.log('Authority login component mounted, auth state:', { userLoggedIn });
   }, [userLoggedIn]);
 
+  // Handle navigation when user is already logged in
+  useEffect(() => {
+    if (userLoggedIn) {
+      console.log('Authority user already logged in, redirecting to dashboard');
+      router.push('/authority-dashboard');
+    }
+  }, [userLoggedIn, router]);
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('Authority form submitted with email:', email);
@@ -62,9 +70,8 @@ const AuthorityLogin = () => {
     }
   };
 
+  // Don't render if user is already logged in
   if (userLoggedIn) {
-    console.log('Authority user already logged in, redirecting to dashboard');
-    router.push('/authority-dashboard');
     return null;
   }
 

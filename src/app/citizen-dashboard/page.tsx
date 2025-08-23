@@ -6,14 +6,16 @@ import { useAuth } from '@/contexts/authContext';
 import { useRouter } from 'next/navigation';
 import { addReport, getReportsByUser, getAllAlerts, onStoreUpdate, ReportOrComplaint } from '@/lib/store';
 
+import MapView from "@/components/map/MapView";
+
 const CitizenDashboard = () => {
   const { currentUser, userLoggedIn, logout } = useAuth();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('overview');
-  const [myReports, setMyReports] = useState<ReportOrComplaint[]>([]);
+  const [mySuggestions, setMySuggestions] = useState<ReportOrComplaint[]>([]);
   const [alerts, setAlerts] = useState(getAllAlerts());
   const [form, setForm] = useState({
-    kind: 'Report' as 'Report' | 'Complaint',
+    kind: 'Suggestion' as 'Suggestion' | 'Feedback',
     title: '',
     description: '',
     location: ''
@@ -28,10 +30,10 @@ const CitizenDashboard = () => {
 
   useEffect(() => {
     if (!currentUser) return;
-    setMyReports(getReportsByUser(currentUser.id));
+    setMySuggestions(getReportsByUser(currentUser.id));
     const off = onStoreUpdate(() => {
       if (!currentUser) return;
-      setMyReports(getReportsByUser(currentUser.id));
+      setMySuggestions(getReportsByUser(currentUser.id));
       setAlerts(getAllAlerts());
     });
     return off;
@@ -46,7 +48,7 @@ const CitizenDashboard = () => {
     return null;
   }
 
-  const submitIssue = async (e: React.FormEvent<HTMLFormElement>) => {
+  const submitSuggestion = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!currentUser) return;
     if (!form.title || !form.description) return;
@@ -59,8 +61,8 @@ const CitizenDashboard = () => {
         description: form.description,
         location: form.location
       });
-      setForm({ kind: 'Report', title: '', description: '', location: '' });
-      setActiveTab('reports');
+      setForm({ kind: 'Suggestion', title: '', description: '', location: '' });
+      setActiveTab('suggestions');
     } finally {
       setSubmitting(false);
     }
@@ -68,10 +70,11 @@ const CitizenDashboard = () => {
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: '📊' },
-    { id: 'reports', label: 'My Reports', icon: '📝' },
-    { id: 'issues', label: 'Report/Complaint', icon: '🚨' },
+    { id: 'suggestions', label: 'My Suggestions', icon: '💡' },
+    { id: 'submit', label: 'Share Ideas', icon: '✨' },
+    { id: 'map', label: 'Map & Location', icon: '🗺️' },
     { id: 'projects', label: 'City Projects', icon: '🏗️' },
-    { id: 'notifications', label: 'Alerts & Notices', icon: '🔔' }
+    { id: 'notifications', label: 'Updates & News', icon: '🔔' }
   ];
 
   const renderTabContent = () => {
@@ -84,31 +87,31 @@ const CitizenDashboard = () => {
               <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-6 rounded-2xl shadow-xl text-white transform hover:scale-105 transition-all duration-300">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-blue-100 text-sm font-medium">Total Submissions</p>
-                    <p className="text-4xl font-bold">{myReports.length}</p>
-                    <p className="text-blue-100 text-sm">Reports & complaints</p>
+                    <p className="text-blue-100 text-sm font-medium">Total Contributions</p>
+                    <p className="text-4xl font-bold">{mySuggestions.length}</p>
+                    <p className="text-blue-100 text-sm">Ideas shared</p>
                   </div>
-                  <div className="text-4xl opacity-80">📊</div>
+                  <div className="text-4xl opacity-80">💡</div>
                 </div>
               </div>
               
               <div className="bg-gradient-to-br from-yellow-500 to-yellow-600 p-6 rounded-2xl shadow-xl text-white transform hover:scale-105 transition-all duration-300">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-yellow-100 text-sm font-medium">Pending Review</p>
-                    <p className="text-4xl font-bold">{myReports.filter(r => r.status === 'Pending').length}</p>
-                    <p className="text-yellow-100 text-sm">Awaiting action</p>
+                    <p className="text-yellow-100 text-sm font-medium">Under Review</p>
+                    <p className="text-4xl font-bold">{mySuggestions.filter(r => r.status === 'Pending').length}</p>
+                    <p className="text-yellow-100 text-sm">Being considered</p>
                   </div>
-                  <div className="text-4xl opacity-80">⏳</div>
+                  <div className="text-4xl opacity-80">🔍</div>
                 </div>
               </div>
               
               <div className="bg-gradient-to-br from-green-500 to-green-600 p-6 rounded-2xl shadow-xl text-white transform hover:scale-105 transition-all duration-300">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-green-100 text-sm font-medium">Resolved</p>
-                    <p className="text-4xl font-bold">{myReports.filter(r => r.status === 'Resolved').length}</p>
-                    <p className="text-green-100 text-sm">Closed items</p>
+                    <p className="text-green-100 text-sm font-medium">Implemented</p>
+                    <p className="text-4xl font-bold">{mySuggestions.filter(r => r.status === 'Resolved').length}</p>
+                    <p className="text-green-100 text-sm">Ideas in action</p>
                   </div>
                   <div className="text-4xl opacity-80">✅</div>
                 </div>
@@ -123,64 +126,64 @@ const CitizenDashboard = () => {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <button
-                  onClick={() => setActiveTab('issues')}
+                  onClick={() => setActiveTab('submit')}
                   className="p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl border border-purple-200 hover:from-purple-100 hover:to-blue-100 transition-all duration-300 text-left group"
                 >
-                  <div className="text-2xl mb-2">🚨</div>
-                  <h4 className="font-semibold text-gray-900 group-hover:text-purple-700">Report New Issue</h4>
-                  <p className="text-sm text-gray-600">Submit a report or complaint</p>
+                  <div className="text-2xl mb-2">✨</div>
+                  <h4 className="font-semibold text-gray-900 group-hover:text-purple-700">Share Your Ideas</h4>
+                  <p className="text-sm text-gray-600">Submit suggestions and feedback</p>
                 </button>
                 
                 <button
-                  onClick={() => setActiveTab('notifications')}
+                  onClick={() => setActiveTab('map')}
                   className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200 hover:from-green-100 hover:to-emerald-100 transition-all duration-300 text-left group"
                 >
-                  <div className="text-2xl mb-2">🔔</div>
-                  <h4 className="font-semibold text-gray-900 group-hover:text-green-700">View Alerts</h4>
-                  <p className="text-sm text-gray-600">Check city notices</p>
+                  <div className="text-2xl mb-2">🗺️</div>
+                  <h4 className="font-semibold text-gray-900 group-hover:text-green-700">View Map</h4>
+                  <p className="text-sm text-gray-600">See your location and city map</p>
                 </button>
               </div>
             </div>
           </div>
         );
 
-      case 'reports':
+      case 'suggestions':
         return (
           <div className="space-y-6">
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-2xl font-bold text-gray-900 flex items-center">
-                  <span className="mr-3">📝</span>
-                  My Reports & Complaints
+                  <span className="mr-3">💡</span>
+                  My Suggestions & Feedback
                 </h3>
                 <span className="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-                  {myReports.length} total
+                  {mySuggestions.length} total
                 </span>
               </div>
               
-              {myReports.length === 0 ? (
+              {mySuggestions.length === 0 ? (
                 <div className="text-center py-12">
-                  <div className="text-6xl mb-4">📭</div>
-                  <p className="text-lg text-gray-600 mb-2">No submissions yet</p>
-                  <p className="text-sm text-gray-500">Start by reporting an issue or filing a complaint</p>
+                  <div className="text-6xl mb-4">💭</div>
+                  <p className="text-lg text-gray-600 mb-2">No suggestions yet</p>
+                  <p className="text-sm text-gray-500">Start by sharing your ideas to improve our city</p>
                   <button
-                    onClick={() => setActiveTab('issues')}
+                    onClick={() => setActiveTab('submit')}
                     className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                   >
-                    Report Issue
+                    Share Your First Idea
                   </button>
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {myReports.map(r => (
+                  {mySuggestions.map(r => (
                     <div key={r.id} className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow bg-gradient-to-r from-gray-50 to-white">
                       <div className="flex justify-between items-start">
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
                             <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                              r.type === 'Report' 
+                              r.type === 'Suggestion' 
                                 ? 'bg-blue-100 text-blue-800' 
-                                : 'bg-orange-100 text-orange-800'
+                                : 'bg-green-100 text-green-800'
                             }`}>
                               {r.type}
                             </span>
@@ -195,7 +198,7 @@ const CitizenDashboard = () => {
                           )}
                           <p className="text-xs text-gray-400 flex items-center">
                             <span className="mr-2">🕒</span>
-                            Submitted: {new Date(r.createdAt).toLocaleString()}
+                            Shared: {new Date(r.createdAt).toLocaleString()}
                           </p>
                         </div>
                         <div className="ml-4">
@@ -206,7 +209,7 @@ const CitizenDashboard = () => {
                               ? 'bg-yellow-100 text-yellow-800 border border-yellow-200' 
                               : 'bg-gray-100 text-gray-800 border border-gray-200'
                           }`}>
-                            {r.status}
+                            {r.status === 'Resolved' ? 'Implemented' : r.status === 'In Progress' ? 'Under Review' : r.status}
                           </span>
                         </div>
                       </div>
@@ -218,25 +221,25 @@ const CitizenDashboard = () => {
           </div>
         );
 
-      case 'issues':
+      case 'submit':
         return (
           <div className="space-y-6">
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                <span className="mr-3">🚨</span>
-                Submit Report or Complaint
+                <span className="mr-3">✨</span>
+                Share Your Ideas
               </h3>
-              <form onSubmit={submitIssue} className="space-y-6">
+              <form onSubmit={submitSuggestion} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">Type</label>
                     <select
                       value={form.kind}
-                      onChange={(e) => setForm({ ...form, kind: e.target.value as 'Report' | 'Complaint' })}
+                      onChange={(e) => setForm({ ...form, kind: e.target.value as 'Suggestion' | 'Feedback' })}
                       className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300"
                     >
-                      <option value="Report">📋 Report</option>
-                      <option value="Complaint">⚠️ Complaint</option>
+                      <option value="Suggestion">💡 Suggestion</option>
+                      <option value="Feedback">💬 Feedback</option>
                     </select>
                   </div>
                   
@@ -259,7 +262,7 @@ const CitizenDashboard = () => {
                     value={form.title}
                     onChange={(e) => setForm({ ...form, title: e.target.value })}
                     className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300"
-                    placeholder="Brief description of the issue"
+                    placeholder="Brief description of your idea"
                     required
                   />
                 </div>
@@ -271,7 +274,7 @@ const CitizenDashboard = () => {
                     value={form.description}
                     onChange={(e) => setForm({ ...form, description: e.target.value })}
                     className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 resize-none"
-                    placeholder="Provide detailed information about the issue..."
+                    placeholder="Share your detailed thoughts and ideas to help improve our city..."
                     required
                   />
                 </div>
@@ -286,17 +289,32 @@ const CitizenDashboard = () => {
                     {submitting ? (
                       <span className="flex items-center justify-center">
                         <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                        Submitting...
+                        Sharing...
                       </span>
                     ) : (
                       <span className="flex items-center justify-center">
-                        <span className="mr-2">📤</span>
-                        Submit {form.kind}
+                        <span className="mr-2">🚀</span>
+                        Share {form.kind}
                       </span>
                     )}
                   </Button>
                 </div>
               </form>
+            </div>
+          </div>
+        );
+
+      case 'map':
+        return (
+          <div className="space-y-6">
+            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                <span className="mr-3">🗺️</span>
+                Map & Location
+              </h3>
+              <div style={{ height: "600px", width: "100%" }}>
+                <MapView />
+              </div>
             </div>
           </div>
         );
@@ -307,14 +325,14 @@ const CitizenDashboard = () => {
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
                 <span className="mr-3">🏗️</span>
-                City Projects
+                City Development Projects
               </h3>
               <div className="text-center py-12">
                 <div className="text-6xl mb-4 animate-pulse">🚧</div>
                 <p className="text-lg text-gray-600 mb-2">Project listings coming soon</p>
-                <p className="text-sm text-gray-500">Stay tuned for updates on city development projects</p>
+                <p className="text-sm text-gray-500">Stay tuned for updates on exciting city development projects</p>
                 <div className="mt-6 p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl border border-yellow-200">
-                  <p className="text-sm text-yellow-800">💡 Tip: Check the Alerts &amp; Notices tab for project announcements!</p>
+                  <p className="text-sm text-yellow-800">💡 Tip: Check the Updates & News tab for project announcements!</p>
                 </div>
               </div>
             </div>
@@ -327,14 +345,14 @@ const CitizenDashboard = () => {
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
                 <span className="mr-3">🔔</span>
-                City Alerts &amp; Notices
+                City Updates & News
               </h3>
               
               {alerts.length === 0 ? (
                 <div className="text-center py-12">
                   <div className="text-6xl mb-4">📭</div>
-                  <p className="text-lg text-gray-600 mb-2">No alerts at the moment</p>
-                  <p className="text-sm text-gray-500">You&apos;re all caught up! Check back later for updates</p>
+                  <p className="text-lg text-gray-600 mb-2">All caught up!</p>
+                  <p className="text-sm text-gray-500">No new updates at the moment. Check back later for exciting city news</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -379,7 +397,7 @@ const CitizenDashboard = () => {
             <div>
               <h1 className="text-4xl font-bold mb-2">Citizen Dashboard</h1>
               <p className="text-blue-100 text-lg">Welcome back, {currentUser?.name}! 👋</p>
-              <p className="text-blue-200 text-sm mt-1">Manage your reports and stay updated with city alerts</p>
+              <p className="text-blue-200 text-sm mt-1">Share your ideas and stay connected with your city</p>
             </div>
             <div className="flex space-x-3">
               <Button 

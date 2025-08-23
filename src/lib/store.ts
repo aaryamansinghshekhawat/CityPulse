@@ -3,7 +3,7 @@ export type ReportStatus = 'Pending' | 'In Progress' | 'Resolved';
 export interface ReportOrComplaint {
   id: string;
   userId: string;
-  type: 'Report' | 'Complaint';
+  type: 'Suggestion' | 'Feedback';
   title: string;
   description: string;
   location?: string;
@@ -99,14 +99,10 @@ export function onStoreUpdate(callback: (key: string) => void): () => void {
   const storageHandler = (e: StorageEvent) => {
     if (e.key === REPORTS_KEY || e.key === ALERTS_KEY) callback(e.key ?? '');
   };
-  if (typeof window !== 'undefined') {
-    window.addEventListener('citypulse:store:update', handler as EventListener);
-    window.addEventListener('storage', storageHandler);
-  }
+  window.addEventListener('citypulse:store:update', handler);
+  window.addEventListener('storage', storageHandler);
   return () => {
-    if (typeof window !== 'undefined') {
-      window.removeEventListener('citypulse:store:update', handler as EventListener);
-      window.removeEventListener('storage', storageHandler);
-    }
+    window.removeEventListener('citypulse:store:update', handler);
+    window.removeEventListener('storage', storageHandler);
   };
 }
